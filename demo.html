@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>LazyLoad</title>
+   <style>
+      img {
+         display: block;
+         margin-bottom: 50px;
+         height: 200px;
+         width: 400px;
+      }
+   </style>
+</head>
+<body>
+   <img src="./img/default.jpg" data-src="./img/1.jpg">
+   <img src="./img/default.jpg" data-src="./img/2.jpg">
+   <img src="./img/default.jpg" data-src="./img/3.jpg">
+   <img src="./img/default.jpg" data-src="./img/4.jpg">
+   <img src="./img/default.jpg" data-src="./img/5.jpg">
+   <img src="./img/default.jpg" data-src="./img/6.jpg">
+   <img src="./img/default.jpg" data-src="./img/7.jpg">
+   <img src="./img/default.jpg" data-src="./img/8.jpg">
+   <img src="./img/default.jpg" data-src="./img/9.jpg">
+   <img src="./img/default.jpg" data-src="./img/10.jpg">
+
+   <script>
+      let imgs = document.querySelectorAll('img[data-src]');
+      let config = {
+         rootMargin: '0px',
+         threshold: 0
+      };
+
+      let observer = new IntersectionObserver((entries, self) => {
+         entries.forEach((entry) => {
+            if(entry.isIntersecting) {
+               let img = entry.target;
+               let src = img.dataset.src;
+               if (src) {
+                  img.src = src;
+                  img.removeAttribute('data-src');
+               }
+               // 解除观察
+               self.unobserve(entry.target);
+            }
+         });
+      }, config);
+
+      imgs.forEach(image => {
+         observer.observe(image);
+      })
+   </script>
+</body>
+</html>
